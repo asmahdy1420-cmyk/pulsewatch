@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="60">
+  <title>{{.Title}}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="top">
+    <h1>{{.Title}}</h1>
+    <div class="banner banner-{{.Overall}}" role="status">{{.Headline}}</div>
+  </header>
+
+  <section class="checks" aria-label="Services">
+    {{range .Checks}}
+    <article class="check">
+      <div class="check-head">
+        <h2>{{.Name}}</h2>
+        <span class="pill pill-{{.Status}}">{{statusLabel .Status}}</span>
+      </div>
+      <div class="bars" role="img" aria-label="Daily uptime for the last {{$.Days}} days">
+        {{range .Bars}}<span class="bar bar-{{.Level}}" title="{{day .Day}}: {{if .HasData}}{{pct .Percent}} uptime ({{.Tally.Down}} failed of {{.Tally.Total}} checks){{else}}no data{{end}}"></span>{{end}}
+      </div>
+      <div class="check-foot">
+        <span>{{$.Days}} days ago</span>
+        <span>{{if .HasData}}{{pct .Uptime}} uptime{{else}}no data yet{{end}}</span>
+        <span>Today</span>
+      </div>
+      {{if .LastMsg}}<p class="last">Last check {{ts .LastSeen}}: {{.LastMsg}}</p>{{end}}
+    </article>
+    {{end}}
+  </section>
+
+  <section class="incidents" aria-label="Recent incidents">
+    <h2>Recent incidents</h2>
+    {{if .Incidents}}
+    <ul>
+      {{range .Incidents}}
+      <li class="incident">
+        <span class="pill pill-{{.Status}}">{{statusLabel .Status}}</span>
+        <strong>{{.CheckName}}</strong>
+        <span class="muted">{{ts .Started}} &middot; {{if .Open}}ongoing for {{dur .Duration}}{{else}}lasted {{dur .Duration}}{{end}}</span>
+        {{if .Cause}}<div class="cause">{{.Cause}}</div>{{end}}
+      </li>
+      {{end}}
+    </ul>
+    {{else}}
+    <p class="muted">No incidents recorded.</p>
+    {{end}}
+  </section>
+
+  <footer class="muted">Updated {{ts .UpdatedAt}} &middot; powered by pulsewatch</footer>
+</main>
+</body>
+</html>

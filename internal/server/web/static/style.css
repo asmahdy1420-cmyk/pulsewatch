@@ -1,0 +1,98 @@
+:root {
+  --bg: #f7f8fa;
+  --card: #ffffff;
+  --text: #1c2330;
+  --muted: #6b7380;
+  --border: #e3e6eb;
+  --up: #2f9e5b;
+  --degraded: #d6a019;
+  --partial: #e07b2a;
+  --down: #d1453b;
+  --none: #d7dbe1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #11151b;
+    --card: #1a2029;
+    --text: #e7eaef;
+    --muted: #9099a6;
+    --border: #2a313c;
+    --none: #333b47;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 32px 16px 48px; }
+
+h1 { font-size: 1.6rem; margin: 0 0 16px; }
+h2 { font-size: 1.05rem; margin: 0; }
+
+.banner {
+  padding: 14px 18px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  background: var(--muted);
+}
+.banner-up { background: var(--up); }
+.banner-degraded { background: var(--degraded); }
+.banner-down { background: var(--down); }
+
+.checks { margin-top: 24px; display: grid; gap: 12px; }
+
+.check, .incidents {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+
+.check-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
+.pill {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--muted);
+  white-space: nowrap;
+}
+.pill-up { background: var(--up); }
+.pill-degraded { background: var(--degraded); }
+.pill-down { background: var(--down); }
+
+.bars { display: flex; gap: 2px; height: 34px; margin: 14px 0 6px; }
+.bar { flex: 1; border-radius: 2px; background: var(--none); min-width: 2px; }
+.bar:hover { opacity: 0.7; }
+.bar-ok { background: var(--up); }
+.bar-degraded { background: var(--degraded); }
+.bar-partial { background: var(--partial); }
+.bar-down { background: var(--down); }
+
+.check-foot { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); }
+
+.last { margin: 10px 0 0; font-size: 0.85rem; color: var(--muted); overflow-wrap: anywhere; }
+
+.incidents { margin-top: 24px; }
+.incidents ul { list-style: none; margin: 12px 0 0; padding: 0; }
+.incident { padding: 10px 0; border-top: 1px solid var(--border); }
+.incident .pill { margin-right: 6px; }
+.cause { margin-top: 4px; font-size: 0.85rem; color: var(--muted); overflow-wrap: anywhere; }
+
+.muted { color: var(--muted); font-size: 0.85rem; }
+footer { margin-top: 24px; text-align: center; }
+
+@media (max-width: 560px) {
+  .bars { gap: 1px; height: 28px; }
+  .bar { min-width: 1px; }
+}
