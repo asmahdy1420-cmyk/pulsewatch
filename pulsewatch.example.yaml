@@ -1,0 +1,59 @@
+# pulsewatch example configuration.
+# ${VAR} references are expanded from the environment at load time.
+
+listen: ":8080"
+database: "pulsewatch.db"   # ":memory:" keeps everything in RAM
+workers: 8                  # max probes running at once
+retention: 90d              # raw results older than this are pruned hourly
+
+status_page:
+  title: "Acme status"
+
+defaults:
+  interval: 60s
+  timeout: 10s
+  jitter: 0.1               # +/-10% on every interval
+  fail_threshold: 3         # consecutive bad probes before alerting
+  recover_threshold: 2      # consecutive good probes before recovery
+
+notifiers:
+  - type: webhook
+    url: "https://hooks.example.com/pulsewatch"
+    secret: "${PULSEWATCH_WEBHOOK_SECRET}"
+  - type: slack
+    url: "https://hooks.slack.com/services/T000/B000/XXXXXXXX"
+
+checks:
+  - id: website
+    name: "Website"
+    type: http
+    target: "https://example.com/"
+    interval: 30s
+    http:
+      expect_status: [200, 299]
+      body_contains: "Example Domain"
+      latency_budget: 800ms
+      cert_expiry_warn: 14d
+
+  - id: api
+    name: "Public API"
+    type: http
+    target: "https://api.example.com/healthz"
+    http:
+      method: GET
+      headers:
+        Accept: application/json
+      body_contains: '"status":"ok"'
+
+  - id: postgres
+    name: "Database"
+    type: tcp
+    target: "db.internal:5432"
+    fail_threshold: 2
+
+  - id: dns
+    name: "DNS"
+    type: dns
+    target: "example.com"
+    dns:
+      record: A
