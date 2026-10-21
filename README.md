@@ -8,6 +8,16 @@ schedules, confirms failures before alerting so a single dropped packet does
 not page anyone, records incidents with start, end and duration, and serves a
 status page with 90-day uptime bars plus a JSON API.
 
+## Screenshots
+
+![Status page with 90-day bars and an incident list](docs/screenshots/status-page.png)
+
+The status page for six demo checks pointed at local test targets. Ninety days of history and the older incidents are seeded demo data; the outage, the degraded Search check and the recovered Public API incident on the last day came from live probes.
+
+![Start-up output](docs/screenshots/startup-log.png)
+
+Start-up log (JSON, via `log/slog`) for the same six checks: each check reports its first confirmed state, and the process stops cleanly on SIGINT.
+
 ## Why
 
 Hosted status pages are a monthly bill and another vendor holding your
